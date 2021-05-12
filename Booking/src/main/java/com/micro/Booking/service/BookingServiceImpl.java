@@ -48,7 +48,7 @@ public class BookingServiceImpl implements BookingService{
         user.setId(count+1);
         this.bookingrepo.save(user);
 
-        String sender = "shwetakulkarni0704@gmail.com";
+        String sender = "pratham@gmail.com";
         String host = "smtp.gmail.com";
         Properties properties = System.getProperties();        properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.port", "465");
@@ -58,7 +58,7 @@ public class BookingServiceImpl implements BookingService{
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication("shwetakulkarni0704@gmail.com", "shweta123");
+                return new PasswordAuthentication("pratham@gmail.com", "pratham123");
 
             }
 
