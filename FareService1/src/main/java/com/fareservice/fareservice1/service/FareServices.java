@@ -10,6 +10,6 @@ import java.util.List;
 public interface FareServices {
     public FlightFare getPrice();
     public List<Fare> getdata();
-    public String postdata(@RequestBody Fare fare);
+    public Fare postdata(@RequestBody Fare fare);
     public Fare getflight(@PathVariable String flightno);
 }

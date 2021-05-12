@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface BookingService {
     // public String getspecificflight(@PathVariable String flightno, @RequestBody User user);
     public User getRefDetail(@PathVariable int id);
-    public String getspecificflight(@PathVariable String flightno, @RequestParam String firstname,@RequestParam String lastname,@RequestParam String gender,@RequestParam String email);
+    public User getspecificflight(@PathVariable String flightno, @RequestParam String firstname, @RequestParam String lastname, @RequestParam String gender, @RequestParam String email);
 }

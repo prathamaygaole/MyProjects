@@ -17,7 +17,6 @@ public class User {
     private String date;
     private String fare;
     private String checkin;
-    
 
     public User() {
     }
@@ -34,6 +33,7 @@ public class User {
         this.to = to;
         this.date = date;
         this.fare = fare;
+
         this.checkin = checkin;
     }
 
@@ -130,7 +130,7 @@ public class User {
     @Override
     public String toString() {
         return "User [checkin=" + checkin + ", date=" + date + ", email=" + email + ", fare=" + fare + ", firstname="
-                + firstname + ", flightfrom=" + from + ", flightno=" + flightno + ", flightto=" + to
+                + firstname + ", from=" + from + ", flightno=" + flightno + ", to=" + to
                 + ", gender=" + gender + ", id=" + id + ", lastname=" + lastname + "]";
     }
 

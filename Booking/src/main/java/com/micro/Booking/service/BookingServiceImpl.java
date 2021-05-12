@@ -32,7 +32,7 @@ public class BookingServiceImpl implements BookingService{
     }
 
     @Override
-    public String getspecificflight(String flightno, String firstname, String lastname, String gender, String email) {
+    public User getspecificflight(String flightno, String firstname, String lastname, String gender, String email) {
         int count=this.bookingrepo.findAll().size();
         Flight flight = this.restTemplate.getForObject("http://search-microservice/flight/"+flightno, Flight.class);
         User user = new User();
@@ -46,9 +46,9 @@ public class BookingServiceImpl implements BookingService{
         user.setDate(flight.getDate());
         user.setFare(flight.getFare());
         user.setId(count+1);
-        this.bookingrepo.save(user);
+      //  this.bookingrepo.save(user);
 
-        String sender = "pratham@gmail.com";
+        String sender = "shwetakulkarni0704@gmail.com";
         String host = "smtp.gmail.com";
         Properties properties = System.getProperties();        properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.port", "465");
@@ -58,7 +58,7 @@ public class BookingServiceImpl implements BookingService{
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication("pratham@gmail.com", "pratham123");
+                return new PasswordAuthentication("shwetakulkarni0704@gmail.com", "shweta123");
 
             }
 
@@ -71,16 +71,16 @@ public class BookingServiceImpl implements BookingService{
            MimeMessage message = new MimeMessage(session);
            message.setFrom(new InternetAddress(sender));
            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-           message.setSubject("Ticket Confirmation...");
-           message.setText("Your booking is confirmed for flight [  "+user.getFlightno() +" ]" +"And Your Reference Number is "+ user.getId());
+           message.setSubject("Ticket Confirmation for FlightBooking ");
+           message.setText(user.getFirstname()+" "+user.getLastname()+" Your booking is confirmed for flight [  "+user.getFlightno() +" ]" +" And Your Reference Number for checkin is "+ user.getId());
            Transport.send(message);
-           System.out.println("Mail successfully sent...");
+           System.out.println("Mail is successfully sent...");
         }
         catch (MessagingException mex) 
         {
            mex.printStackTrace();
         }
-        return "Please Check the booking details on your Email...";
+        return this.bookingrepo.save(user);  //changed
     }
 }
 

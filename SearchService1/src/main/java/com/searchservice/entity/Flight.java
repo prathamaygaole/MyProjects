@@ -13,7 +13,7 @@ public class Flight {
     private String date;
     private String fare;
 
-    public Flight(int i, String st101, String america, String london, int i1, int i2) {
+    public Flight() {
     }
 
     public Flight(int id, String flightno, String from, String to, String date, String fare) {

@@ -75,7 +75,7 @@ public class Flight {
 
     @Override
     public String toString() {
-        return "Flight [date=" + date + ", fare=" + fare + ", flightto=" + to + ", flightfrom=" + from
+        return "Flight [date=" + date + ", fare=" + fare + ", to=" + to + ", from=" + from
                 + ", flightno=" + flightno + ", id=" + id + "]";
     }
     

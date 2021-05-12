@@ -8,6 +8,7 @@ public class User {
     private String flightno;
     private String from;
     private String to;
+    private String email;
     private String date;
     private String fare;
     private String checkin;
@@ -15,8 +16,20 @@ public class User {
     public User() {
     }
 
-    
-    public User(int id, String firstname, String lastname, String gender, String flightno, String from,
+    public User(int id, String firstname, String lastname, String gender, String flightno, String from, String to, String email, String date, String fare, String checkin) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.flightno = flightno;
+        this.from = from;
+        this.to = to;
+        this.email = email;
+        this.date = date;
+        this.fare = fare;
+        this.checkin = checkin;
+    }
+/* public User(int id, String firstname, String lastname, String gender, String flightno, String from,
                 String to, String date, String fare, String checkin) {
         this.id = id;
         this.firstname = firstname;
@@ -28,8 +41,15 @@ public class User {
         this.date = date;
         this.fare = fare;
         this.checkin = checkin;
+    }*/
+
+    public String getEmail() {
+        return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getCheckin() {
         return checkin;
@@ -115,9 +135,18 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [checkin=" + checkin + ", date=" + date + ", fare=" + fare + ", firstname=" + firstname
-                + ", flightfrom=" + from + ", flightno=" + flightno + ", flightto=" + to + ", gender="
-                + gender + ", id=" + id + ", lastname=" + lastname + "]";
+        return "User{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", gender='" + gender + '\'' +
+                ", flightno='" + flightno + '\'' +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", email='" + email + '\'' +
+                ", date='" + date + '\'' +
+                ", fare='" + fare + '\'' +
+                ", checkin='" + checkin + '\'' +
+                '}';
     }
-
 }

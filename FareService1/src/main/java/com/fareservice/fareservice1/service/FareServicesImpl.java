@@ -15,9 +15,9 @@ public class FareServicesImpl implements FareServices {
     private Farerepo Farerepo;
 
     @Override
-    public String postdata(Fare fare) {
-        this.Farerepo.save(fare);
-        return "Successfully added";
+    public Fare postdata(Fare fare) {
+
+        return this.Farerepo.save(fare);
     }
 
     @Override
@@ -28,8 +28,8 @@ public class FareServicesImpl implements FareServices {
 
     @Override
     public FlightFare getPrice() {
-        FlightFare p = new FlightFare(this.Farerepo.findAll());
-        return p;
+        FlightFare f = new FlightFare(this.Farerepo.findAll());
+        return f;
     }
 
     @Override
