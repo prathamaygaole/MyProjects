@@ -23,14 +23,13 @@ public class FlightServiceImpl implements FlightService{
     private Flightrepo flightrepo;
 
     @Override
-    public Flight postdata(Flight flight) {
-       // this.flightrepo.save(flight);
-      //  return "Your have Successfully added the data...!!";
-        return this.flightrepo.save(flight);
+    public String postdata(Flight flight) {
+        this.flightrepo.save(flight);
+        return "Your have Successfully added the data...!!";
     }
 
     @Override
-    public List<Flight> getdata() {
+    public  List<Flight> getdata() {
         return this.flightrepo.findAll();
     }
 
@@ -40,7 +39,9 @@ public class FlightServiceImpl implements FlightService{
         var f=flightfare.getFlightFare().stream().map(i->i.getFlightno()).collect(Collectors.toList());
         for(var i:this.flightrepo.findAll()){
             if(f.contains(i.getFlightno())){
-                var index = i.getId();
+               // if(f.contains(i.getFlightno())){
+
+                    var index = i.getId();
                 i.setFare(flightfare.getFlightFare().get(index-1).getPrice());
             }
         }
@@ -68,20 +69,11 @@ public class FlightServiceImpl implements FlightService{
 
     @Override
     public Flight getdata(String flightNo) {
-        Flight flight=null;
-        try{
         var fare = this.restTemplate.getForObject("http://fare-microservice/fare/"+flightNo, Fare.class);
-         flight=this.flightrepo.findByFlightno(flightNo);
+        Flight flight=this.flightrepo.findByFlightno(flightNo);
         flight.setFare(fare.getPrice());
-
-
-
-    }catch(Exception e) {
-            e.printStackTrace();
-        }
-
         return flight;
-        }
+    }
     
 }
 

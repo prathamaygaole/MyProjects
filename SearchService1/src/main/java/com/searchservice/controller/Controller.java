@@ -1,71 +1,100 @@
 package com.searchservice.controller;
 
+import com.searchservice.entity.AuthenticationRequest;
+import com.searchservice.entity.AuthenticationResponse;
 import com.searchservice.entity.AvailableFlight;
 import com.searchservice.entity.Flight;
-import com.searchservice.exception.FlightServiceException;
 import com.searchservice.service.FlightService;
+import com.searchservice.service.JwtUtil;
+import com.searchservice.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.OperatorInstanceof;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@CrossOrigin
+
 @RequestMapping("/flight")
 public class Controller {
 
     @Autowired
     private FlightService flightService;
-    
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtUtil jwtTokenUtil;
+
+    @Autowired
+    private MyUserDetailsService userDetailsService;
+
+
+
     @GetMapping("/check")
     public String run(){
-        return "Running Flight Search MicroService";
+        return "It is running...";
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+            );
+        }
+        catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username or password", e);
+        }
+
+
+         UserDetails userDetails = userDetailsService  //final
+                .loadUserByUsername(authenticationRequest.getUsername());
+
+         String jwt = jwtTokenUtil.generateToken(userDetails);  //final
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
     @PostMapping("/addData")
-    public ResponseEntity<Flight> postdata(@RequestBody Flight flight) {
-        Flight f = null;
-        try {
-            f = this.flightService.postdata(flight);
-            System.out.println(flight);
-            return ResponseEntity.of(Optional.of(f));
-        }catch(Exception e){
-            e.printStackTrace();
-
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-           // throw new FlightServiceException("Fill the data correctly..");
-
-
-        }
+    public String postdata(@RequestBody Flight flight){
+        return this.flightService.postdata(flight);
     }
 
     @GetMapping("/allflights")
-    public ResponseEntity<List<Flight>> getallflight(){
-     List<Flight> flights= flightService.getallflight();
-        return new ResponseEntity<List<Flight>>(flights, HttpStatus.FOUND);
+    public List<Flight> getallflight(){
+        return this.flightService.getallflight();
     }
 
     @GetMapping("/{flightNo}")
-    public ResponseEntity<Flight> getdata(@PathVariable String flightNo){
-        Flight flightno= flightService.getdata(flightNo);
-        if(flightno==null){
-            return new ResponseEntity<Flight>(flightno, HttpStatus.NOT_FOUND);
-        }
-       return ResponseEntity.of(Optional.of(flightno));
+    public Flight getdata(@PathVariable String flightNo){
+        return this.flightService.getdata(flightNo);
     }
 
     @GetMapping("/flightsearch")
-    public ResponseEntity<AvailableFlight> getsearchflightwithfare(@RequestParam String from, @RequestParam String to, @RequestParam String date){
-         AvailableFlight availableFlight = flightService.getsearchflightwithfare(from, to, date);
-        return new ResponseEntity<AvailableFlight>(availableFlight, HttpStatus.OK);
+    public AvailableFlight getsearchflightwithfare(@RequestParam String from, @RequestParam String to, @RequestParam String date){
+        return this.flightService.getsearchflightwithfare(from, to, date);
     }
 
 }
 
-    // @GetMapping("/flightsearch")
-    // public AvailableFlight getsearchflightwithfare(@RequestBody Flight flight){
-    //     return this.flightService.getsearchflightwithfare(flight);
-    // }
+
+/*  @PostMapping("/authanticate")
+    public ResponseEntity<?> generateToken(@ResponseBody JwtRequest jwtRequest){
+    try{
+    authanticationManager.authanticate(new UsernamePasswordAuthanticationToken(jwtRequest
+    .getName(), jwtRequest.getPassword()));
+    }catch (Exception e){
+        throw new UserNotFoundException("User Forbidden");
+    }
+   String token = jwtTokenUtil.generateToken(jwtRequest);
+		 UserDetails userDetails = userDetailsService.loginAdminJwt(jwtRequest);
+		return new ResponseEntity<>(new JwtAdminResponse(token, userDetails), HttpStatus.OK);
+	}
+
+    }*/
